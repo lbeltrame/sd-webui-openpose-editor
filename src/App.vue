@@ -652,6 +652,8 @@ export default defineComponent({
     resizeOpenposeCanvas(newWidth: number, newHeight: number) {
       if (!this.canvas)
         return;
+       // resize the real canvas FIRST
+      this._resizeHTMLCanvas(newWidth, newHeight);
       this.openposeCanvas.set({
         width: newWidth,
         height: newHeight,
@@ -705,7 +707,7 @@ export default defineComponent({
       if (activeBodyPart === undefined) {
         if (this.activeBodyPart !== undefined) {
           // There can only be one active person. If we collapse the person panel
-          // or collapse the body part panel. This function can still receive the 
+          // or collapse the body part panel. This function can still receive the
           // correct person of the targeted object.
           const target = person[this.activeBodyPart]!;
           if (target)
@@ -862,8 +864,8 @@ export default defineComponent({
      * Adds a body part from the given JSON file.
      * The given JSON is expected to only have one person.
      * @param file JSON file blob
-     * @param person 
-     * @param part 
+     * @param person
+     * @param part
      */
     addJsonObject(file: Blob, person: OpenposePerson, part: OpenposeBodyPart) {
       this.readOpenposeJson(file).then(this.parseOpenposeJson).then((people: OpenposePerson[]) => {
